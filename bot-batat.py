@@ -16,7 +16,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 import time
-import os
 
 # initializing the driver
 driver = webdriver.Firefox()
@@ -56,11 +55,7 @@ def clickity(ident):
 info = []
 with open("batat-input.txt", 'r') as f:
 	info = f.readlines()
-
-info_str = []
-
-for entry in info:
-	info_str.append(entry.strip())
+	info = [i.strip() for i in info]
 
 # filling out the form 
 lookup("txtFam", info_str[0]) # last name
