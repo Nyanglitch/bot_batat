@@ -25,6 +25,7 @@ driver.get("http://washington.kdmid.ru/queue/visitor.aspx")
 
 # prefix for common tag names
 prefix = "ctl00_MainContent_"
+prefix_sel = prefix + "DDL_"
 
 # looking for elements
 def lookup(ident, content):
@@ -41,9 +42,8 @@ def selectup(ident, value):
 	Looks up select elements by id and
 	selects a specified value.
 	"""
-	local_prefix = prefix + "DDL_"
-	select = Select(driver.find_element_by_id(local_prefix + ident))
-	select.select_by_index(value - 1)
+	select = Select(driver.find_element_by_id(prefix_sel + ident))
+	select.select_by_index(int(value) - 1)
 
 def clickity(ident):
 	"""
@@ -57,22 +57,29 @@ with open("batat-input.txt", 'r') as f:
 	info = f.readlines()
 	info = [i.strip() for i in info]
 
-# filling out the form 
-lookup("txtFam", info[0]) # last name
-lookup("txtIm", info[1]) # first name
-lookup("txtTel", info[2]) # phone
-lookup("txtEmail", info[3]) # email
+# filling out the form
+site_selectors = ["txtFam", "txtIm", "txtTel", 
+	"txtEmail", "Day", "Month", "TextBox_Year"] 
 
-selectup("Day", int(info[4]))
-selectup("Month", int(info[5]))
-lookup("TextBox_Year", int(info[6]))
+for index, selector in enumerate(site_selectors):
+	if index not in [4, 5]:
+		lookup(selector, info[index])
+	else:
+		selectup(selector, info[index])
 
 time.sleep(10) # pause to fill in the captcha
 
 clickity("ButtonA")
 
 # next page: clicking the link
-driver.find_element_by_link_text("Загранпаспорт").click()
+def zagran_click():
+	driver.find_element_by_link_text("Загранпаспорт").click()
+
+try:
+	zagran_click()
+except NoSuchElementException:
+	time.sleep(5)
+	zagran_click()
 
 # next page: tick checkbox, follow link
 clickity("CheckBoxList1_0")
