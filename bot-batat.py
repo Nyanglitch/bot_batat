@@ -58,14 +58,14 @@ with open("batat-input.txt", 'r') as f:
 	info = [i.strip() for i in info]
 
 # filling out the form 
-lookup("txtFam", info_str[0]) # last name
-lookup("txtIm", info_str[1]) # first name
-lookup("txtTel", info_str[2]) # phone
-lookup("txtEmail", info_str[3]) # email
+lookup("txtFam", info[0]) # last name
+lookup("txtIm", info[1]) # first name
+lookup("txtTel", info[2]) # phone
+lookup("txtEmail", info[3]) # email
 
-selectup("Day", int(info_str[4]))
-selectup("Month", int(info_str[5]))
-lookup("TextBox_Year", int(info_str[6]))
+selectup("Day", int(info[4]))
+selectup("Month", int(info[5]))
+lookup("TextBox_Year", int(info[6]))
 
 time.sleep(10) # pause to fill in the captcha
 
